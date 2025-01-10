@@ -214,7 +214,14 @@ export default {
   function getSessionId(request) {
 	const cookieHeader = request.headers.get('Cookie');
 	if (!cookieHeader) return null;
-	const cookie = cookieHeader.split('; ').find(row => row.startsWith('user_session'));
-	return cookie ? cookie.split('=')[1] : null;
+	try {
+	  const cookie = cookieHeader.split('; ').find(row => row.startsWith('user_session'));
+	  return cookie ? cookie.split('=')[1] : null;
+	}
+	catch (e) {
+		// 쿠키 여러개 없이 하나만 있을수도 있음. 
+		return cookieHeader.split('=')[1];
+	}
+	return null
   }
   
